@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Task } from '../types/task';
+import { List, ListItem, ListItemText, Typography, Paper } from '@mui/material';
 
 const TaskList = () => {
     const [tasks, setTasks] = useState<Task[]>([]);
@@ -13,16 +14,58 @@ const TaskList = () => {
 
     return (
         <div>
-            <h1>タスク一覧</h1>
-            <ul>
-                {tasks.length === 0 ? (
-                    <li>タスクがありません。</li>
-                ) : (
-                    tasks.map((task) => (
-                        <li key={task.id}>{task.title}: {task.description}</li>
-                    ))
-                )}
-            </ul>
+            <Typography variant="h4" gutterBottom>
+                タスク一覧
+            </Typography>
+            <Paper
+                elevation={3}
+                sx={{padding: '16px', border: '1px solid #ccc'}}
+            >
+                {/* ヘッダー */}
+                <div
+                    style={{display: 'flex', padding: '8px 16px', borderBottom: '1px solid #ccc', backgroundColor: '#F0F8FF'}}
+                >
+                    <Typography
+                        variant="subtitle1"
+                        sx={{flex: 1, fontWeight: 'bold', borderRight: '1px solid #ccc'}}
+                    >
+                        タイトル
+                    </Typography>
+                    <Typography
+                        variant="subtitle1"
+                        sx={{flex: 2, fontWeight: 'bold', paddingLeft: '8px'}}
+                    >
+                        詳細
+                    </Typography>
+                </div>
+                {/* タスクリスト */}
+                <List>
+                    {tasks.length === 0 ? (
+                        <ListItem>
+                            <ListItemText primary="タスクがありません。"/>
+                        </ListItem>
+                    ) : (
+                        tasks.map((task, index) => (
+                            <ListItem
+                                key={task.id}
+                                divider={index < tasks.length - 1}
+                                sx={{display: 'flex', alignItems: 'center'}}
+                            >
+                                <Typography
+                                    sx={{flex: 1, borderRight: '1px solid #ccc', wordWrap: 'break-word', whiteSpace: 'pre-wrap'}}
+                                >
+                                    {task.title}
+                                </Typography>
+                                <Typography
+                                    sx={{flex: 2, paddingLeft: '8px', wordWrap: 'break-word', whiteSpace: 'pre-wrap'}}
+                                >
+                                    {task.description}
+                                </Typography>
+                            </ListItem>
+                        ))
+                    )}
+                </List>
+            </Paper>
         </div>
     );
 };
