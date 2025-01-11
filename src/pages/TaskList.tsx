@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Task } from '../types/task';
-import {List, ListItem, ListItemText, Typography, Paper, Button} from '@mui/material';
+import { GroupedTasks, Task, TaskStatus } from '../types/task';
+import { List, ListItem, ListItemText, Typography, Paper, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const TaskList = () => {
@@ -14,68 +14,52 @@ const TaskList = () => {
             .catch((error) => console.error('Error fetching tasks:', error));
     }, []);
 
+    const groupedTasks: GroupedTasks = tasks.reduce((acc: GroupedTasks, task: Task) => {
+        if (!acc[task.status]) {
+            acc[task.status] = [];
+        }
+        acc[task.status].push(task);
+        return acc;
+    }, {});
+
     return (
-        <div>
+        <div style={{ height: '100vh', display: 'flex', flexDirection: 'column'}}>
             <Typography variant="h4" gutterBottom>
                 タスク一覧
             </Typography>
+
             <Button
                 variant="contained"
                 color="primary"
                 onClick={() => navigate('/tasks/new')}
-                style={{ marginBottom: '16px' }}
+                style={{ marginBottom: '16px', alignSelf: 'flex-start' }}
             >
                 タスク作成
             </Button>
-            <Paper
-                elevation={3}
-                sx={{padding: '16px', border: '1px solid #ccc'}}
-            >
-                {/* ヘッダー */}
-                <div
-                    style={{display: 'flex', padding: '8px 16px', borderBottom: '1px solid #ccc', backgroundColor: '#F0F8FF'}}
-                >
-                    <Typography
-                        variant="subtitle1"
-                        sx={{flex: 1, fontWeight: 'bold', borderRight: '1px solid #ccc'}}
-                    >
-                        タイトル
-                    </Typography>
-                    <Typography
-                        variant="subtitle1"
-                        sx={{flex: 2, fontWeight: 'bold', paddingLeft: '8px'}}
-                    >
-                        詳細
-                    </Typography>
-                </div>
-                {/* タスクリスト */}
-                <List>
-                    {tasks.length === 0 ? (
-                        <ListItem>
-                            <ListItemText primary="タスクがありません。"/>
-                        </ListItem>
-                    ) : (
-                        tasks.map((task, index) => (
-                            <ListItem
-                                key={task.id}
-                                divider={index < tasks.length - 1}
-                                sx={{display: 'flex', alignItems: 'center'}}
-                            >
-                                <Typography
-                                    sx={{flex: 1, borderRight: '1px solid #ccc', wordWrap: 'break-word', whiteSpace: 'pre-wrap'}}
-                                >
-                                    {task.title}
-                                </Typography>
-                                <Typography
-                                    sx={{flex: 2, paddingLeft: '8px', wordWrap: 'break-word', whiteSpace: 'pre-wrap'}}
-                                >
-                                    {task.description}
-                                </Typography>
-                            </ListItem>
-                        ))
-                    )}
-                </List>
-            </Paper>
+
+            {/* カンバン */}
+            <div style={{ display: 'flex', gap: '5px' }}>
+                {Object.values(TaskStatus).map((status) => (
+                    <Paper key={status} sx={{ padding: '16px', flex: 1 }}>
+                        <Typography variant="h6" gutterBottom>
+                            {status.charAt(0).toUpperCase() + status.slice(1)}
+                        </Typography>
+                        <List>
+                            {(groupedTasks[status] || []).length === 0 ? (
+                                <ListItem>
+                                    <ListItemText primary="タスクがありません。" />
+                                </ListItem>
+                            ) : (
+                                (groupedTasks[status] || []).map((task: Task) => (
+                                    <ListItem key={task.id}>
+                                        <ListItemText primary={task.title} secondary={task.description} />
+                                    </ListItem>
+                                ))
+                            )}
+                        </List>
+                    </Paper>
+                ))}
+            </div>
         </div>
     );
 };
