@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { GroupedTasks, Task, TaskStatus } from '../types/task';
-import { List, ListItem, ListItemText, Typography, Paper, Button } from '@mui/material';
+import {List, ListItem, ListItemText, Typography, Paper, Button, Card, CardContent} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const TaskList = () => {
@@ -38,7 +38,7 @@ const TaskList = () => {
             </Button>
 
             {/* カンバン */}
-            <div style={{ display: 'flex', gap: '5px' }}>
+            <div style={{ display: 'flex', gap: '5px', height: '85vh' }}>
                 {Object.values(TaskStatus).map((status) => (
                     <Paper key={status} sx={{ padding: '16px', flex: 1 }}>
                         <Typography variant="h6" gutterBottom>
@@ -51,8 +51,15 @@ const TaskList = () => {
                                 </ListItem>
                             ) : (
                                 (groupedTasks[status] || []).map((task: Task) => (
-                                    <ListItem key={task.id}>
-                                        <ListItemText primary={task.title} secondary={task.description} />
+                                    <ListItem key={task.id} sx={{ padding: '5px 0' }}>
+                                        {/* タスクカード */}
+                                        <Card variant="outlined" sx={{ width: '100%' }}>
+                                            <CardContent>
+                                                <Typography variant="body2">
+                                                    {task.title}
+                                                </Typography>
+                                            </CardContent>
+                                        </Card>
                                     </ListItem>
                                 ))
                             )}
