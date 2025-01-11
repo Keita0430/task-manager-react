@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import { Route, Routes } from "react-router-dom";
 import TaskList from "./pages/TaskList";
+import TaskCreate from "./pages/TaskCreate";
 import Container from '@mui/material/Container';
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
     <Container>
       <Routes>
         <Route path='/' element={<TaskList />} />
+        <Route path='/tasks/new' element={<TaskCreate />} />
       </Routes>
     </Container>
   );

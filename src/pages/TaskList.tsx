@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Task } from '../types/task';
-import { List, ListItem, ListItemText, Typography, Paper } from '@mui/material';
+import {List, ListItem, ListItemText, Typography, Paper, Button} from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const TaskList = () => {
     const [tasks, setTasks] = useState<Task[]>([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get<{ tasks: Task[] }>('http://localhost:3000/api/v1/tasks')
@@ -17,6 +19,14 @@ const TaskList = () => {
             <Typography variant="h4" gutterBottom>
                 タスク一覧
             </Typography>
+            <Button
+                variant="contained"
+                color="primary"
+                onClick={() => navigate('/tasks/new')}
+                style={{ marginBottom: '16px' }}
+            >
+                タスク作成
+            </Button>
             <Paper
                 elevation={3}
                 sx={{padding: '16px', border: '1px solid #ccc'}}
