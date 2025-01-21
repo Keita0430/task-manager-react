@@ -47,9 +47,15 @@ const TaskList = () => {
                 ...tasksBeforeMoved.slice(destination.index)
             ];
 
+            // タスクのpositionを更新
+            const tasksAfterMovedWithNewPosition = tasksAfterMoved.map((task, index) => ({
+                ...task,
+                position: index + 1,
+            }));
+
             const updatedGroupedTasks = {
                 ...groupedTasks,
-                [sourceStatus]: tasksAfterMoved,
+                [sourceStatus]: tasksAfterMovedWithNewPosition,
             };
             setGroupedTasks(updatedGroupedTasks);
         } else {
@@ -66,6 +72,14 @@ const TaskList = () => {
                 [sourceStatus]: sourceTasks,
                 [destinationStatus]: destinationTasks,
             };
+
+            // 各レーンのタスクのpositionを更新
+            Object.keys(updatedGroupedTasks).forEach((status) => {
+                updatedGroupedTasks[status] = updatedGroupedTasks[status].map((task, index) => ({
+                    ...task,
+                    position: index + 1,
+                }));
+            });
 
             const updatedTasks = Object.values(updatedGroupedTasks).flat() as Task[];
             setTasks(updatedTasks);

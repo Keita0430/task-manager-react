@@ -3,6 +3,7 @@ export type Task = {
     title: string;
     description: string;
     status: TaskStatusType;
+    position: number;
     created_at: string;
     updated_at: string;
 };
