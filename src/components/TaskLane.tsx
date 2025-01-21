@@ -8,6 +8,9 @@ const TaskLane = ({title, tasks, status}: {
     tasks: Task[];
     status: TaskStatusType;
 }) => {
+    // positionの昇順でソート
+    const sortedTasks: Task[] = [...tasks].sort((a, b) => a.position - b.position);
+
     return (
         <Paper sx={{padding: '16px', flex: 1}}>
             <Typography variant="h6" gutterBottom>
@@ -21,7 +24,7 @@ const TaskLane = ({title, tasks, status}: {
                         {...provided.droppableProps}
                     >
                         <List>
-                            {tasks.map((task: Task, index: number) => (
+                            {sortedTasks.map((task: Task, index: number) => (
                                 <Draggable key={task.id} draggableId={String(task.id)} index={index}>
                                     {(provided) => (
                                         <ListItem
