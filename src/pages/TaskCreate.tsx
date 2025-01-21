@@ -1,19 +1,24 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { TextField, Button, Box, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
-import { Task } from "../types/task";
+import {useLocation, useNavigate} from 'react-router-dom';
+import {Box, Button, FormControl, InputLabel, MenuItem, Select, TextField} from '@mui/material';
+import {Task} from "../types/task";
 
 const TaskCreate = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [status, setStatus] = useState('todo');
     const navigate = useNavigate();
+    const location = useLocation();
+    const groupedTasks = location.state?.groupedTasks || {};
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
+        const newPosition = (groupedTasks[status] || []).length + 1;
+
         axios.post<{ task: Task }>('http://localhost:3000/api/v1/tasks', {
-            task: { title, description, status }
+            task: { title, description, status, position: newPosition }
         })
             .then(() => navigate('/'))
             .catch((error: unknown) => console.error('Error creating task:', error));

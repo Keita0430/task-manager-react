@@ -108,7 +108,7 @@ const TaskList = () => {
             <Button
                 variant="contained"
                 color="primary"
-                onClick={() => navigate('/tasks/new')}
+                onClick={() => navigate('/tasks/new', { state: { groupedTasks } })}
                 style={{marginBottom: '16px', alignSelf: 'flex-start'}}
             >
                 タスク作成
