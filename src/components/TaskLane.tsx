@@ -36,7 +36,6 @@ const TaskLane = ({title, tasks, status}: {
                                             <Card variant="outlined" sx={{width: '100%'}}>
                                                 <CardContent>
                                                     <Typography variant="body2">{task.title}</Typography>
-                                                    <Typography variant="body2">{task.position}</Typography>
                                                 </CardContent>
                                             </Card>
                                         </ListItem>
