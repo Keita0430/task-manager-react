@@ -40,6 +40,7 @@ const TaskList = () => {
             const tasksBeforeMoved = Array.from(groupedTasks[sourceStatus]);
 
             const [movedTask] = tasksBeforeMoved.splice(source.index, 1);
+            movedTask.position = destination.index + 1;
 
             const tasksAfterMoved = [
                 ...tasksBeforeMoved.slice(0, destination.index),
@@ -58,6 +59,15 @@ const TaskList = () => {
                 [sourceStatus]: tasksAfterMovedWithNewPosition,
             };
             setGroupedTasks(updatedGroupedTasks);
+
+            axios.patch<{task: Task}>(`http://localhost:3000/api/v1/tasks/${movedTask.id}/status_and_position`, {
+                task: {
+                    status: sourceStatus,
+                    position: movedTask.position,
+                },
+            }).catch((error) => {
+                console.error('Failed to update task:', error);
+            });
         } else {
             // タスクがレーン間で移動する場合
             const sourceTasks = Array.from(groupedTasks[sourceStatus]);
@@ -65,6 +75,7 @@ const TaskList = () => {
 
             const [movedTask] = sourceTasks.splice(source.index, 1);
             movedTask.status = destinationStatus as TaskStatusType;
+            movedTask.position = destination.index + 1;
             destinationTasks.splice(destination.index, 0, movedTask);
 
             const updatedGroupedTasks = {
@@ -83,6 +94,15 @@ const TaskList = () => {
 
             const updatedTasks = Object.values(updatedGroupedTasks).flat() as Task[];
             setTasks(updatedTasks);
+
+            axios.patch<{task: Task}>(`http://localhost:3000/api/v1/tasks/${movedTask.id}/status_and_position`, {
+                task: {
+                    status: destinationStatus,
+                    position: movedTask.position,
+                },
+            }).catch((error) => {
+                console.error('Failed to update task:', error);
+            });
         }
     };
 
