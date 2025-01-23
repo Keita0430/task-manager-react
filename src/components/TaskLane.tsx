@@ -2,6 +2,7 @@ import React from 'react';
 import {Task, TaskStatusType} from '../types/task';
 import {List, ListItem, Typography, Paper, Card, CardContent} from '@mui/material';
 import {Droppable, Draggable} from 'react-beautiful-dnd';
+import TaskOptionsMenu from "./TaskOptionMenu";
 
 const TaskLane = ({title, tasks, status}: {
     title: string;
@@ -34,8 +35,13 @@ const TaskLane = ({title, tasks, status}: {
                                             sx={{padding: '5px 0'}}
                                         >
                                             <Card variant="outlined" sx={{width: '100%'}}>
-                                                <CardContent>
+                                                <CardContent sx={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'space-between'
+                                                }}>
                                                     <Typography variant="body2">{task.title}</Typography>
+                                                    <TaskOptionsMenu/>
                                                 </CardContent>
                                             </Card>
                                         </ListItem>
