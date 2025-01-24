@@ -1,8 +1,13 @@
 import React from "react";
 import {IconButton, Menu, MenuItem} from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import {TaskStatusType} from "../types/task";
 
-const TaskOptionsMenu = () => {
+const TaskOptionsMenu = ({onDelete, taskId, status}: {
+    onDelete: (taskId: number, status: TaskStatusType) => void;
+    taskId: number;
+    status: TaskStatusType;
+}) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
 
@@ -12,6 +17,11 @@ const TaskOptionsMenu = () => {
 
     const handleClose = () => {
         setAnchorEl(null);
+    };
+
+    const handleDeleteClick = () => {
+        onDelete(taskId, status);
+        handleClose();
     };
 
     return (
@@ -32,7 +42,7 @@ const TaskOptionsMenu = () => {
                 onClose={handleClose}
             >
                 <MenuItem onClick={handleClose}>アーカイブ</MenuItem>
-                <MenuItem onClick={handleClose}>削除</MenuItem>
+                <MenuItem onClick={handleDeleteClick}>削除</MenuItem>
             </Menu>
         </div>
     );

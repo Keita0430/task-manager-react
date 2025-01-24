@@ -4,10 +4,11 @@ import {List, ListItem, Typography, Paper, Card, CardContent} from '@mui/materia
 import {Droppable, Draggable} from 'react-beautiful-dnd';
 import TaskOptionsMenu from "./TaskOptionMenu";
 
-const TaskLane = ({title, tasks, status}: {
+const TaskLane = ({title, tasks, status, onDelete}: {
     title: string;
     tasks: Task[];
     status: TaskStatusType;
+    onDelete: (taskId: number, status: TaskStatusType) => void;
 }) => {
     // positionの昇順でソート
     const sortedTasks: Task[] = [...tasks].sort((a, b) => a.position - b.position);
@@ -41,7 +42,7 @@ const TaskLane = ({title, tasks, status}: {
                                                     justifyContent: 'space-between'
                                                 }}>
                                                     <Typography variant="body2">{task.title}</Typography>
-                                                    <TaskOptionsMenu/>
+                                                    <TaskOptionsMenu onDelete={onDelete} taskId={task.id} status={status}/>
                                                 </CardContent>
                                             </Card>
                                         </ListItem>
