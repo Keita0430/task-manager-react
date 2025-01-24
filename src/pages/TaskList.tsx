@@ -32,77 +32,44 @@ const TaskList = () => {
         const {destination, source} = result;
         if (!destination) return; // ドロップ先がない場合は何もしない
 
-        const sourceStatus = source.droppableId; // 移動元ステータス
-        const destinationStatus = destination.droppableId; // 移動先ステータス
+        const originalStatus = source.droppableId; // 移動元ステータス
+        const newStatus = destination.droppableId; // 移動先ステータス
+
+        // 移動するタスクを取得
+        const movedTask = groupedTasks[originalStatus].find((task) => (source.index + 1) === task.position);
+        if (!movedTask) return;
+
+        // 移動先のpositionを取得
+        const newPosition = destination.index + 1
 
         // タスクが同じレーン内で移動する場合
-        if (sourceStatus === destinationStatus) {
-            const tasksBeforeMoved = Array.from(groupedTasks[sourceStatus]);
-
-            const [movedTask] = tasksBeforeMoved.splice(source.index, 1);
-            movedTask.position = destination.index + 1;
-
-            const tasksAfterMoved = [
-                ...tasksBeforeMoved.slice(0, destination.index),
-                movedTask,
-                ...tasksBeforeMoved.slice(destination.index)
-            ];
-
-            // タスクのpositionを更新
-            const tasksAfterMovedWithNewPosition = tasksAfterMoved.map((task, index) => ({
-                ...task,
-                position: index + 1,
-            }));
-
-            const updatedGroupedTasks = {
-                ...groupedTasks,
-                [sourceStatus]: tasksAfterMovedWithNewPosition,
-            };
-            setGroupedTasks(updatedGroupedTasks);
-
-            axios.patch<{task: Task}>(`http://localhost:3000/api/v1/tasks/${movedTask.id}/status_and_position`, {
+        if (originalStatus === newStatus) {
+            axios.patch<{ tasks: Task[] }>(`http://localhost:3000/api/v1/tasks/${movedTask.id}/status_and_position`, {
                 task: {
-                    status: sourceStatus,
-                    position: movedTask.position,
+                    status: originalStatus,
+                    position: newPosition,
                 },
-            }).catch((error) => {
-                console.error('Failed to update task:', error);
-            });
+            })
+                .then((response) => {
+                    setTasks(response.data.tasks)
+                })
+                .catch((error) => {
+                    console.error('Failed to update task:', error);
+                });
         } else {
             // タスクがレーン間で移動する場合
-            const sourceTasks = Array.from(groupedTasks[sourceStatus]);
-            const destinationTasks = Array.from(groupedTasks[destinationStatus] || []);
-
-            const [movedTask] = sourceTasks.splice(source.index, 1);
-            movedTask.status = destinationStatus as TaskStatusType;
-            movedTask.position = destination.index + 1;
-            destinationTasks.splice(destination.index, 0, movedTask);
-
-            const updatedGroupedTasks = {
-                ...groupedTasks,
-                [sourceStatus]: sourceTasks,
-                [destinationStatus]: destinationTasks,
-            };
-
-            // 各レーンのタスクのpositionを更新
-            Object.keys(updatedGroupedTasks).forEach((status) => {
-                updatedGroupedTasks[status] = updatedGroupedTasks[status].map((task, index) => ({
-                    ...task,
-                    position: index + 1,
-                }));
-            });
-
-            const updatedTasks = Object.values(updatedGroupedTasks).flat() as Task[];
-            setTasks(updatedTasks);
-
-            axios.patch<{task: Task}>(`http://localhost:3000/api/v1/tasks/${movedTask.id}/status_and_position`, {
+            axios.patch<{ tasks: Task[] }>(`http://localhost:3000/api/v1/tasks/${movedTask.id}/status_and_position`, {
                 task: {
-                    status: destinationStatus,
-                    position: movedTask.position,
+                    status: newStatus,
+                    position: newPosition,
                 },
-            }).catch((error) => {
-                console.error('Failed to update task:', error);
-            });
+            })
+                .then((response) => {
+                    setTasks(response.data.tasks)
+                })
+                .catch((error) => {
+                    console.error('Failed to update task:', error);
+                });
         }
     };
 
@@ -145,7 +112,7 @@ const TaskList = () => {
             <Button
                 variant="contained"
                 color="primary"
-                onClick={() => navigate('/tasks/new', { state: { groupedTasks } })}
+                onClick={() => navigate('/tasks/new', {state: {groupedTasks}})}
                 style={{marginBottom: '16px', alignSelf: 'flex-start'}}
             >
                 タスク作成
