@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {Task, TaskStatusType} from '../types/task';
-import {List, ListItem, Typography, Paper, Card, CardContent} from '@mui/material';
+import {List, ListItem, Typography, Paper} from '@mui/material';
 import {Droppable, Draggable} from 'react-beautiful-dnd';
-import TaskOptionsMenu from './TaskOptionMenu';
 import TaskModal from './TaskModal';
+import TaskCard from './TaskCard';
 
 const TaskLane = ({title, tasks, status, onDelete}: {
     title: string;
@@ -46,24 +46,7 @@ const TaskLane = ({title, tasks, status, onDelete}: {
                                             {...provided.dragHandleProps}
                                             sx={{padding: '5px 0'}}
                                         >
-                                            <Card variant="outlined" sx={{width: '100%'}}>
-                                                <CardContent
-                                                    sx={{
-                                                        display: 'flex',
-                                                        alignItems: 'center',
-                                                        justifyContent: 'space-between',
-                                                    }}
-                                                >
-                                                    <Typography
-                                                        variant="body2"
-                                                        onClick={() => handleTaskClick(task)}
-                                                        sx={{cursor: 'pointer'}}
-                                                    >
-                                                        {task.title}
-                                                    </Typography>
-                                                    <TaskOptionsMenu onDelete={onDelete} taskId={task.id} status={status}/>
-                                                </CardContent>
-                                            </Card>
+                                            <TaskCard task={task} handleTaskClick={handleTaskClick} onDelete={onDelete}/>
                                         </ListItem>
                                     )}
                                 </Draggable>
