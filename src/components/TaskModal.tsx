@@ -11,14 +11,14 @@ import {
     TableCell
 } from '@mui/material';
 
-const TaskModal = ({ selectedTask, handleClose }: {
+const TaskModal = ({ selectedTask, closeTaskModal }: {
     selectedTask: Task | null,
-    handleClose: () => void;
+    closeTaskModal: () => void;
 }) => {
     return (
         <Dialog
             open={Boolean(selectedTask)}
-            onClose={handleClose}
+            onClose={closeTaskModal}
             slotProps={{
                 paper: { sx: { width: '600px', height: 'auto', maxWidth: '95%' } }, // 高さを自動調整し、幅をレスポンシブに
             }}>

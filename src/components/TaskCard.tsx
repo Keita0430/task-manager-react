@@ -3,9 +3,9 @@ import TaskOptionsMenu from './TaskOptionMenu';
 import {Card, CardContent, Typography} from "@mui/material";
 import {Task, TaskStatusType} from "../types/task";
 
-const TaskCard = ({task, handleTaskClick, onDelete}: {
+const TaskCard = ({task, openTaskModal, onDelete}: {
     task: Task,
-    handleTaskClick: (task: Task) => void;
+    openTaskModal: (task: Task) => void;
     onDelete: (taskId: number, status: TaskStatusType) => void;
 }) => {
 
@@ -20,7 +20,7 @@ const TaskCard = ({task, handleTaskClick, onDelete}: {
             >
                 <Typography
                     variant="body2"
-                    onClick={() => handleTaskClick(task)}
+                    onClick={() => openTaskModal(task)}
                     sx={{cursor: 'pointer'}}
                 >
                     {task.title}

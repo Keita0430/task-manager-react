@@ -13,11 +13,11 @@ const TaskLane = ({title, tasks, status, onDelete}: {
 }) => {
     const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
-    const handleTaskClick = (task: Task) => {
+    const openTaskModal = (task: Task) => {
         setSelectedTask(task);
     };
 
-    const handleClose = () => {
+    const closeTaskModal = () => {
         setSelectedTask(null);
     };
 
@@ -46,7 +46,7 @@ const TaskLane = ({title, tasks, status, onDelete}: {
                                             {...provided.dragHandleProps}
                                             sx={{padding: '5px 0'}}
                                         >
-                                            <TaskCard task={task} handleTaskClick={handleTaskClick} onDelete={onDelete}/>
+                                            <TaskCard task={task} openTaskModal={openTaskModal} onDelete={onDelete}/>
                                         </ListItem>
                                     )}
                                 </Draggable>
@@ -58,7 +58,7 @@ const TaskLane = ({title, tasks, status, onDelete}: {
             </Droppable>
 
             {/* ダイアログ */}
-            <TaskModal selectedTask={selectedTask} handleClose={handleClose}/>
+            <TaskModal selectedTask={selectedTask} closeTaskModal={closeTaskModal}/>
         </Paper>
     );
 };
