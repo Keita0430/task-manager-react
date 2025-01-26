@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Task, TaskStatusType} from '../types/task';
 import {List, ListItem, Typography, Paper, Card, CardContent} from '@mui/material';
 import {Droppable, Draggable} from 'react-beautiful-dnd';
-import TaskOptionsMenu from "./TaskOptionMenu";
+import TaskOptionsMenu from './TaskOptionMenu';
+import TaskModal from './TaskModal';
 
 const TaskLane = ({title, tasks, status, onDelete}: {
     title: string;
@@ -10,6 +11,16 @@ const TaskLane = ({title, tasks, status, onDelete}: {
     status: TaskStatusType;
     onDelete: (taskId: number, status: TaskStatusType) => void;
 }) => {
+    const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+
+    const handleTaskClick = (task: Task) => {
+        setSelectedTask(task);
+    };
+
+    const handleClose = () => {
+        setSelectedTask(null);
+    };
+
     // positionの昇順でソート
     const sortedTasks: Task[] = [...tasks].sort((a, b) => a.position - b.position);
 
@@ -36,12 +47,20 @@ const TaskLane = ({title, tasks, status, onDelete}: {
                                             sx={{padding: '5px 0'}}
                                         >
                                             <Card variant="outlined" sx={{width: '100%'}}>
-                                                <CardContent sx={{
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    justifyContent: 'space-between'
-                                                }}>
-                                                    <Typography variant="body2">{task.title}</Typography>
+                                                <CardContent
+                                                    sx={{
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'space-between',
+                                                    }}
+                                                >
+                                                    <Typography
+                                                        variant="body2"
+                                                        onClick={() => handleTaskClick(task)}
+                                                        sx={{cursor: 'pointer'}}
+                                                    >
+                                                        {task.title}
+                                                    </Typography>
                                                     <TaskOptionsMenu onDelete={onDelete} taskId={task.id} status={status}/>
                                                 </CardContent>
                                             </Card>
@@ -54,6 +73,9 @@ const TaskLane = ({title, tasks, status, onDelete}: {
                     </div>
                 )}
             </Droppable>
+
+            {/* ダイアログ */}
+            <TaskModal selectedTask={selectedTask} handleClose={handleClose}/>
         </Paper>
     );
 };
