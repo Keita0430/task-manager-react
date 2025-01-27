@@ -57,7 +57,7 @@ const TaskLane = ({title, tasks, status, onDelete}: {
                 )}
             </Droppable>
 
-            {/* ダイアログ */}
+            {/* タスク詳細モーダル */}
             <TaskDetailModal selectedTask={selectedTask} closeTaskDetailModal={closeTaskDetailModal}/>
         </Paper>
     );
