@@ -44,8 +44,9 @@ const TaskList = () => {
 
         // タスクが同じレーン内で移動する場合
         if (originalStatus === newStatus) {
-            axios.patch<{ tasks: Task[] }>(`http://localhost:3000/api/v1/tasks/${movedTask.id}/status_and_position`, {
+            axios.post<{ tasks: Task[] }>(`http://localhost:3000/api/v1/tasks/reorder`, {
                 task: {
+                    id: movedTask.id,
                     status: originalStatus,
                     position: newPosition,
                 },
@@ -58,8 +59,9 @@ const TaskList = () => {
                 });
         } else {
             // タスクがレーン間で移動する場合
-            axios.patch<{ tasks: Task[] }>(`http://localhost:3000/api/v1/tasks/${movedTask.id}/status_and_position`, {
+            axios.post<{ tasks: Task[] }>(`http://localhost:3000/api/v1/tasks/reorder`, {
                 task: {
+                    id: movedTask.id,
                     status: newStatus,
                     position: newPosition,
                 },
