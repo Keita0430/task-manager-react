@@ -25,7 +25,7 @@ const TaskCard = ({task, openTaskDetailModal, onDelete}: {
                 >
                     {task.title}
                 </Typography>
-                <TaskOptionsMenu onDelete={onDelete} taskId={task.id} status={task.status}/>
+                <TaskOptionsMenu onDelete={onDelete} task={task}/>
             </CardContent>
         </Card>
 
