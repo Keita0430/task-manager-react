@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Task, TaskStatusType} from '../types/task';
 import {List, ListItem, Typography, Paper} from '@mui/material';
 import {Droppable, Draggable} from 'react-beautiful-dnd';
-import TaskModal from './TaskModal';
+import TaskDetailModal from './TaskDetailModal';
 import TaskCard from './TaskCard';
 
 const TaskLane = ({title, tasks, status, onDelete}: {
@@ -13,11 +13,11 @@ const TaskLane = ({title, tasks, status, onDelete}: {
 }) => {
     const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
-    const openTaskModal = (task: Task) => {
+    const openTaskDetailModal = (task: Task) => {
         setSelectedTask(task);
     };
 
-    const closeTaskModal = () => {
+    const closeTaskDetailModal = () => {
         setSelectedTask(null);
     };
 
@@ -46,7 +46,7 @@ const TaskLane = ({title, tasks, status, onDelete}: {
                                             {...provided.dragHandleProps}
                                             sx={{padding: '5px 0'}}
                                         >
-                                            <TaskCard task={task} openTaskModal={openTaskModal} onDelete={onDelete}/>
+                                            <TaskCard task={task} openTaskDetailModal={openTaskDetailModal} onDelete={onDelete}/>
                                         </ListItem>
                                     )}
                                 </Draggable>
@@ -58,7 +58,7 @@ const TaskLane = ({title, tasks, status, onDelete}: {
             </Droppable>
 
             {/* ダイアログ */}
-            <TaskModal selectedTask={selectedTask} closeTaskModal={closeTaskModal}/>
+            <TaskDetailModal selectedTask={selectedTask} closeTaskDetailModal={closeTaskDetailModal}/>
         </Paper>
     );
 };
