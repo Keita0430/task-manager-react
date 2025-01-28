@@ -9,7 +9,7 @@ const TaskLane = ({title, tasks, status, onDelete}: {
     title: string;
     tasks: Task[];
     status: TaskStatusType;
-    onDelete: (taskId: number, status: TaskStatusType) => void;
+    onDelete: (taskId: number) => void;
 }) => {
     const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 

@@ -1,12 +1,12 @@
 import React from 'react';
 import TaskOptionsMenu from './TaskOptionMenu';
 import {Card, CardContent, Typography} from "@mui/material";
-import {Task, TaskStatusType} from "../types/task";
+import {Task} from "../types/task";
 
 const TaskCard = ({task, openTaskDetailModal, onDelete}: {
     task: Task,
     openTaskDetailModal: (task: Task) => void;
-    onDelete: (taskId: number, status: TaskStatusType) => void;
+    onDelete: (taskId: number) => void;
 }) => {
 
     return (

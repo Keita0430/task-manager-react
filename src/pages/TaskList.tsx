@@ -75,17 +75,11 @@ const TaskList = () => {
         }
     };
 
-    const handleDeleteTask = (taskId: number, status: TaskStatusType) => {
+    const handleDeleteTask = (taskId: number) => {
         axios
             .delete<{ tasks: Task[] }>(`http://localhost:3000/api/v1/tasks/${taskId}`)
             .then((response) => {
-                const updatedTasks = response.data.tasks;
-
-                const updatedGroupedTasks = {
-                    ...groupedTasks,
-                    [status]: updatedTasks,
-                };
-                setGroupedTasks(updatedGroupedTasks);
+                setTasks(response.data.tasks)
             })
             .catch((error) => {
                 alert('タスクの削除に失敗しました。詳細: ' + error);

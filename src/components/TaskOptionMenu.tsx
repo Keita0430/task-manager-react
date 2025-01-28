@@ -1,11 +1,11 @@
 import React from "react";
 import {IconButton, Menu, MenuItem} from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import {Task, TaskStatusType} from "../types/task";
+import {Task} from "../types/task";
 import {useNavigate} from "react-router-dom";
 
 const TaskOptionsMenu = ({onDelete, task}: {
-    onDelete: (taskId: number, status: TaskStatusType) => void;
+    onDelete: (taskId: number) => void;
     task: Task;
 }) => {
     const navigate = useNavigate();
@@ -22,7 +22,7 @@ const TaskOptionsMenu = ({onDelete, task}: {
     };
 
     const handleDeleteClick = () => {
-        onDelete(task.id, task.status as TaskStatusType);
+        onDelete(task.id);
         handleClose();
     };
 
