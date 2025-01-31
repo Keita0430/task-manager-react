@@ -5,11 +5,12 @@ import {Droppable, Draggable} from 'react-beautiful-dnd';
 import TaskDetailModal from './TaskDetailModal';
 import TaskCard from './TaskCard';
 
-const TaskLane = ({title, tasks, status, onDelete}: {
+const TaskLane = ({title, tasks, status, onDelete, onArchive}: {
     title: string;
     tasks: Task[];
     status: TaskStatusType;
     onDelete: (taskId: number) => void;
+    onArchive: (taskId: number) => void;
 }) => {
     const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
@@ -46,7 +47,7 @@ const TaskLane = ({title, tasks, status, onDelete}: {
                                             {...provided.dragHandleProps}
                                             sx={{padding: '5px 0'}}
                                         >
-                                            <TaskCard task={task} openTaskDetailModal={openTaskDetailModal} onDelete={onDelete}/>
+                                            <TaskCard task={task} openTaskDetailModal={openTaskDetailModal} onDelete={onDelete} onArchive={onArchive}/>
                                         </ListItem>
                                     )}
                                 </Draggable>

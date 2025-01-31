@@ -86,6 +86,18 @@ const TaskList = () => {
             });
     };
 
+    const handleArchiveTask = (taskId: number) => {
+        axios
+            .patch<{ tasks: Task[] }>(`http://localhost:3000/api/v1/tasks/${taskId}/archive`)
+            .then((response) => {
+                console.log(response)
+                setTasks(response.data.tasks)
+            })
+            .catch((error) => {
+                alert('タスクのアーカイブに失敗しました。詳細: ' + error);
+            });
+    };
+
     const getTitle = (status: TaskStatusType) => {
         switch (status) {
             case TaskStatus.TODO:
@@ -123,6 +135,7 @@ const TaskList = () => {
                             tasks={groupedTasks[status] || []}
                             status={status as TaskStatusType}
                             onDelete={handleDeleteTask}
+                            onArchive={handleArchiveTask}
                         />
                     ))}
                 </div>

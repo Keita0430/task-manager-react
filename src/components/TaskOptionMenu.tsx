@@ -4,9 +4,10 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import {Task} from "../types/task";
 import {useNavigate} from "react-router-dom";
 
-const TaskOptionsMenu = ({onDelete, task}: {
+const TaskOptionsMenu = ({onDelete, onArchive, task}: {
     onDelete: (taskId: number) => void;
     task: Task;
+    onArchive: (taskId: number) => void;
 }) => {
     const navigate = useNavigate();
 
@@ -23,6 +24,11 @@ const TaskOptionsMenu = ({onDelete, task}: {
 
     const handleDeleteClick = () => {
         onDelete(task.id);
+        handleClose();
+    };
+
+    const handleArchiveClick = () => {
+        onArchive(task.id);
         handleClose();
     };
 
@@ -43,9 +49,9 @@ const TaskOptionsMenu = ({onDelete, task}: {
                 open={open}
                 onClose={handleClose}
             >
-                <MenuItem onClick={handleClose}>アーカイブ</MenuItem>
-                <MenuItem onClick={handleDeleteClick}>削除</MenuItem>
                 <MenuItem onClick={() => navigate('/tasks/edit', {state: {task}})}>編集</MenuItem>
+                <MenuItem onClick={handleDeleteClick}>削除</MenuItem>
+                <MenuItem onClick={handleArchiveClick}>アーカイブ</MenuItem>
             </Menu>
         </div>
     );

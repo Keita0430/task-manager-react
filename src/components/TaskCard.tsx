@@ -3,10 +3,11 @@ import TaskOptionsMenu from './TaskOptionMenu';
 import {Card, CardContent, Typography} from "@mui/material";
 import {Task} from "../types/task";
 
-const TaskCard = ({task, openTaskDetailModal, onDelete}: {
+const TaskCard = ({task, openTaskDetailModal, onDelete, onArchive}: {
     task: Task,
     openTaskDetailModal: (task: Task) => void;
     onDelete: (taskId: number) => void;
+    onArchive: (taskId: number) => void;
 }) => {
 
     return (
@@ -25,7 +26,7 @@ const TaskCard = ({task, openTaskDetailModal, onDelete}: {
                 >
                     {task.title}
                 </Typography>
-                <TaskOptionsMenu onDelete={onDelete} task={task}/>
+                <TaskOptionsMenu onDelete={onDelete} onArchive={onArchive} task={task}/>
             </CardContent>
         </Card>
 
