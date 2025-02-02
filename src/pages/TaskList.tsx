@@ -1,16 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {GroupedTasks, Task, TaskStatus, TaskStatusType} from '../types/task';
-import {Button} from '@mui/material';
-import {useNavigate} from 'react-router-dom';
 import {DragDropContext, DropResult} from 'react-beautiful-dnd';
 import TaskLane from "../components/TaskLane";
 import axios from "axios";
 import ViewKanbanIcon from '@mui/icons-material/ViewKanban';
+import TasksOptionsMenu from "../components/TasksOptionMenu";
 
 const TaskList = () => {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [groupedTasks, setGroupedTasks] = useState<GroupedTasks>({});
-    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get<{ tasks: Task[] }>('http://localhost:3000/api/v1/tasks')
@@ -114,25 +112,10 @@ const TaskList = () => {
 
     return (
         <div style={{height: '100vh', display: 'flex', flexDirection: 'column'}}>
-            <ViewKanbanIcon style={{ color: '#666', marginTop: '16px', marginBottom: '16px'}} />
-
-            <Button
-                variant="contained"
-                color="primary"
-                onClick={() => navigate('/tasks/new', {state: {groupedTasks}})}
-                style={{marginBottom: '16px', alignSelf: 'flex-start'}}
-            >
-                タスク作成
-            </Button>
-
-            <Button
-                variant="contained"
-                color="primary"
-                onClick={() => navigate('/tasks/archived')}
-                style={{marginBottom: '16px', alignSelf: 'flex-start'}}
-            >
-                アーカイブ済みタスク一覧
-            </Button>
+            <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                <ViewKanbanIcon style={{ color: '#666', marginTop: '16px', marginBottom: '16px'}} />
+                <TasksOptionsMenu />
+            </div>
 
             <DragDropContext onDragEnd={handleOnDragEnd}>
                 <div style={{display: 'flex', gap: '5px', height: '85vh', marginBottom: '16px'}}>
