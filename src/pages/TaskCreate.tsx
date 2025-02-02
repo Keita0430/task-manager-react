@@ -3,6 +3,7 @@ import axios from 'axios';
 import {useLocation, useNavigate} from 'react-router-dom';
 import {Box, Button, FormControl, InputLabel, MenuItem, Select, TextField} from '@mui/material';
 import {Task} from "../types/task";
+import AddTaskIcon from '@mui/icons-material/AddTask';
 
 const TaskCreate = () => {
     const [title, setTitle] = useState('');
@@ -26,7 +27,7 @@ const TaskCreate = () => {
 
     return (
         <Box component="form" onSubmit={handleSubmit} sx={{ maxWidth: 400, margin: 'auto' }}>
-            <h1>タスク作成</h1>
+            <AddTaskIcon style={{ color: '#666', marginTop: '16px'}} />
             <TextField
                 label="タイトル"
                 value={title}
