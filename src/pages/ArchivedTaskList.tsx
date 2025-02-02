@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {Card, CardContent, List, ListItem, Paper, Typography} from '@mui/material';
+import {Button, Card, CardContent, List, ListItem, Paper, Typography} from '@mui/material';
 import axios from "axios";
 import {Task} from "../types/task";
 import InboxIcon from '@mui/icons-material/Inbox';
+import {useNavigate} from 'react-router-dom';
 
 const ArchivedTaskList = () => {
     const [archivedTasks, setArchivedTasks] = useState<Task[]>([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get<{ tasks: Task[] }>('http://localhost:3000/api/v1/tasks/archived')
@@ -17,7 +19,18 @@ const ArchivedTaskList = () => {
 
     return (
         <div style={{height: '100vh', display: 'flex', flexDirection: 'column'}}>
-            <InboxIcon style={{color: '#666', marginTop: '16px', marginBottom: '16px'}}/>
+            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+                <InboxIcon style={{color: '#666', marginTop: '16px', marginBottom: '16px'}}/>
+                <Button
+                    variant="outlined"
+                    color="primary"
+                    sx={{ marginTop: '8px' }}
+                    onClick={() => navigate('/')}
+                >
+                    戻る
+                </Button>
+            </div>
+
 
             <Paper sx={{padding: '16px', flex: 1, marginBottom: '16px'}}>
                 <List>

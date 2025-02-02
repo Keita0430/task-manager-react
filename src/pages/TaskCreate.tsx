@@ -67,7 +67,7 @@ const TaskCreate = () => {
             </Button>
             <Button
                 variant="outlined"
-                color="secondary"
+                color="primary"
                 fullWidth
                 sx={{ marginTop: '8px' }}
                 onClick={() => navigate('/')}
