@@ -5,6 +5,7 @@ import TaskList from "./pages/TaskList";
 import TaskCreate from "./pages/TaskCreate";
 import Container from '@mui/material/Container';
 import TaskEdit from "./pages/TaskEdit";
+import ArchivedTaskList from "./pages/ArchivedTaskList";
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
         <Route path='/' element={<TaskList />} />
         <Route path='/tasks/new' element={<TaskCreate />} />
         <Route path='/tasks/edit' element={<TaskEdit />} />
+        <Route path='/tasks/archived' element={<ArchivedTaskList />} />
       </Routes>
     </Container>
   );
