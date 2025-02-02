@@ -35,7 +35,7 @@ const TaskLane = ({title, tasks, status, onDelete, onArchive}: {
             }}
         >
             <Typography variant="h6" gutterBottom>
-                {title}
+                {title} ({tasks.length})
             </Typography>
 
             <Droppable droppableId={status} direction="vertical">
