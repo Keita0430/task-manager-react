@@ -65,6 +65,15 @@ const TaskCreate = () => {
             <Button type="submit" variant="contained" color="primary" fullWidth>
                 作成
             </Button>
+            <Button
+                variant="outlined"
+                color="secondary"
+                fullWidth
+                sx={{ marginTop: '8px' }}
+                onClick={() => navigate('/')}
+            >
+                キャンセル
+            </Button>
         </Box>
     );
 };
