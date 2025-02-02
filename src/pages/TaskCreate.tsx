@@ -22,7 +22,9 @@ const TaskCreate = () => {
             task: { title, description, status, position: newPosition }
         })
             .then(() => navigate('/'))
-            .catch((error: unknown) => console.error('Error creating task:', error));
+            .catch((error: unknown) => {
+                alert('タスクの作成に失敗しました。詳細: ' + error);
+            });
     };
 
     return (

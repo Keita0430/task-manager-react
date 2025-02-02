@@ -13,7 +13,9 @@ const TaskList = () => {
     useEffect(() => {
         axios.get<{ tasks: Task[] }>('http://localhost:3000/api/v1/tasks')
             .then((response) => setTasks(response.data.tasks))
-            .catch((error) => console.error('Error fetching tasks:', error));
+            .catch((error: unknown) => {
+                alert('タスクの一覧の取得に失敗しました。詳細: ' + error);
+            });
     }, []);
 
     useEffect(() => {
@@ -53,8 +55,8 @@ const TaskList = () => {
                 .then((response) => {
                     setTasks(response.data.tasks)
                 })
-                .catch((error) => {
-                    console.error('Failed to update task:', error);
+                .catch((error: unknown) => {
+                    alert('タスクの並び替えに失敗しました。詳細: ' + error);
                 });
         } else {
             // タスクがレーン間で移動する場合
@@ -68,8 +70,8 @@ const TaskList = () => {
                 .then((response) => {
                     setTasks(response.data.tasks)
                 })
-                .catch((error) => {
-                    console.error('Failed to update task:', error);
+                .catch((error: unknown) => {
+                    alert('タスクの並び替えに失敗しました。詳細: ' + error);
                 });
         }
     };
@@ -89,7 +91,6 @@ const TaskList = () => {
         axios
             .patch<{ tasks: Task[] }>(`http://localhost:3000/api/v1/tasks/${taskId}/archive`)
             .then((response) => {
-                console.log(response)
                 setTasks(response.data.tasks)
             })
             .catch((error) => {
