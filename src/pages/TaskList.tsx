@@ -118,7 +118,7 @@ const TaskList = () => {
             </div>
 
             <DragDropContext onDragEnd={handleOnDragEnd}>
-                <div style={{display: 'flex', gap: '5px', height: '85vh', marginBottom: '16px'}}>
+                <div style={{display: 'flex', gap: '5px', flexGrow: 1, minHeight: 0, marginBottom: '16px'}}>
                     {Object.values(TaskStatus).map((status) => (
                         <TaskLane
                             key={status}

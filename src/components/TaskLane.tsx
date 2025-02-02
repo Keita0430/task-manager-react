@@ -26,7 +26,14 @@ const TaskLane = ({title, tasks, status, onDelete, onArchive}: {
     const sortedTasks: Task[] = [...tasks].sort((a, b) => a.position - b.position);
 
     return (
-        <Paper sx={{padding: '16px', flex: 1}}>
+        <Paper
+            sx={{
+                padding: '16px',
+                flex: 1,
+                display: 'flex',
+                flexDirection: 'column',
+            }}
+        >
             <Typography variant="h6" gutterBottom>
                 {title}
             </Typography>
@@ -36,6 +43,9 @@ const TaskLane = ({title, tasks, status, onDelete, onArchive}: {
                     <div
                         ref={provided.innerRef}
                         {...provided.droppableProps}
+                        style={{
+                            overflowY: 'auto',
+                        }}
                     >
                         <List>
                             {sortedTasks.map((task: Task, index: number) => (
