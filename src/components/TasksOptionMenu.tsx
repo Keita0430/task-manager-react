@@ -2,8 +2,11 @@ import React from "react";
 import {IconButton, Menu, MenuItem} from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import {useNavigate} from "react-router-dom";
+import {GroupedTasks} from "../types/task";
 
-const TasksOptionsMenu = () => {
+const TasksOptionsMenu = ({groupedTasks}: {
+    groupedTasks: GroupedTasks;
+}) => {
     const navigate = useNavigate();
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -34,7 +37,7 @@ const TasksOptionsMenu = () => {
                 open={open}
                 onClose={handleClose}
             >
-                <MenuItem onClick={() => navigate('/tasks/new')}>タスク追加</MenuItem>
+                <MenuItem onClick={() => navigate('/tasks/new', {state: {groupedTasks}})}>タスク追加</MenuItem>
                 <MenuItem onClick={() => navigate('/tasks/archived')}>アーカイブ済みタスク</MenuItem>
             </Menu>
         </div>

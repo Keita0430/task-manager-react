@@ -114,7 +114,7 @@ const TaskList = () => {
         <div style={{height: '100vh', display: 'flex', flexDirection: 'column'}}>
             <div style={{display: 'flex', justifyContent: 'space-between'}}>
                 <ViewKanbanIcon style={{ color: '#666', marginTop: '16px', marginBottom: '16px'}} />
-                <TasksOptionsMenu />
+                <TasksOptionsMenu groupedTasks={groupedTasks} />
             </div>
 
             <DragDropContext onDragEnd={handleOnDragEnd}>
