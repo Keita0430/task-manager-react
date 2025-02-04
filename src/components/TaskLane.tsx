@@ -22,9 +22,6 @@ const TaskLane = ({title, tasks, status, onDelete, onArchive}: {
         setSelectedTask(null);
     };
 
-    // positionの昇順でソート
-    const sortedTasks: Task[] = [...tasks].sort((a, b) => a.position - b.position);
-
     return (
         <Paper
             sx={{
@@ -48,7 +45,7 @@ const TaskLane = ({title, tasks, status, onDelete, onArchive}: {
                         }}
                     >
                         <List>
-                            {sortedTasks.map((task: Task, index: number) => (
+                            {tasks.map((task: Task, index: number) => (
                                 <Draggable key={task.id} draggableId={String(task.id)} index={index}>
                                     {(provided) => (
                                         <ListItem

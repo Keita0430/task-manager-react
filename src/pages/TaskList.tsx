@@ -26,33 +26,78 @@ const TaskList = () => {
             acc[task.status].push(task);
             return acc;
         }, {});
+
+        // 各レーンのタスクを position 順にソート
+        Object.keys(newGroupedTasks).forEach((status) => {
+            newGroupedTasks[status].sort((a, b) => a.position - b.position);
+        });
+
         setGroupedTasks(newGroupedTasks);
     }, [tasks]);
 
     const handleOnDragEnd = (result: DropResult) => {
-        const {destination, source} = result;
+        const { destination, source } = result;
         if (!destination) return; // ドロップ先がない場合は何もしない
 
-        const originalStatus = source.droppableId; // 移動元ステータス
-        const newStatus = destination.droppableId; // 移動先ステータス
+        const sourceStatus = source.droppableId;
+        const destinationStatus = destination.droppableId;
 
         // 移動するタスクを取得
-        const movedTask = groupedTasks[originalStatus].find((task) => (source.index + 1) === task.position);
+        const movedTask = groupedTasks[sourceStatus].find((task) => (source.index + 1) === task.position);
         if (!movedTask) return;
 
-        // 移動先のpositionを取得
-        const newPosition = destination.index + 1
+        const newPosition = destination.index + 1;
 
-        // タスクが同じレーン内で移動する場合
-        if (originalStatus === newStatus) {
-            reorderTask(movedTask.id, originalStatus, newPosition);
-        } else {
-            // タスクがレーン間で移動する場合
-            reorderTask(movedTask.id, newStatus, newPosition);
-        }
+        /*
+        groupedTasks はレーンごとのタスクの並び順を管理しているため、並び替え時には tasks ではなく groupedTasks を更新する必要がある。
+        tasks は API レスポンスで同期されるため、データ整合性に影響しない。
+        */
+        setGroupedTasks((prevGroupedTasks) => {
+            const updatedGroupedTasks = { ...prevGroupedTasks };
+
+            if (sourceStatus === destinationStatus) {
+                // **タスクが同じレーン内で移動する場合**
+                const tasksInLane: Task[] = [...updatedGroupedTasks[sourceStatus]];
+
+                // タスクを元の位置から削除
+                tasksInLane.splice(source.index, 1);
+                // 新しい位置に挿入
+                tasksInLane.splice(destination.index, 0, movedTask);
+
+                // position を更新
+                updatedGroupedTasks[sourceStatus] = tasksInLane.map((task, index) => ({
+                    ...task,
+                    position: index + 1,
+                }));
+            } else {
+                // **タスクがレーン間で移動する場合**
+                const sourceLane = [...updatedGroupedTasks[sourceStatus]];
+                const targetLane = [...(updatedGroupedTasks[destinationStatus] || [])];
+
+                // 移動元のレーンからタスクを削除
+                const filteredSourceLane = sourceLane.filter((task) => task.id !== movedTask.id);
+                // 移動元レーンのタスクの position を更新
+                updatedGroupedTasks[sourceStatus] = filteredSourceLane.map((task, index) => ({
+                    ...task,
+                    position: index + 1,
+                }));
+
+                // 移動先レーンにタスクを追加
+                targetLane.splice(destination.index, 0, { ...movedTask, status: destinationStatus as TaskStatusType });
+                // 移動先レーンのタスクの position を更新
+                updatedGroupedTasks[destinationStatus] = targetLane.map((task, index) => ({
+                    ...task,
+                    position: index + 1,
+                }));
+            }
+
+            return updatedGroupedTasks;
+        });
+
+        reorderTask(movedTask.id, destinationStatus as TaskStatusType, newPosition);
     };
 
-    const reorderTask = (taskId: number, status: string, position: number) => {
+    const reorderTask = (taskId: number, status: TaskStatusType, position: number) => {
         axios.post<{ tasks: Task[] }>('http://localhost:3000/api/v1/tasks/reorder', {
             task: { id: taskId, status, position },
         })
