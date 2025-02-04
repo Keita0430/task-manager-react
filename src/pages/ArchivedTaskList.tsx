@@ -4,6 +4,7 @@ import axios from "axios";
 import {Task} from "../types/task";
 import InboxIcon from '@mui/icons-material/Inbox';
 import {useNavigate} from 'react-router-dom';
+import ArchivedTaskOptionsMenu from "../components/ArchivedTaskOptionMenu";
 
 const ArchivedTaskList = () => {
     const [archivedTasks, setArchivedTasks] = useState<Task[]>([]);
@@ -16,6 +17,22 @@ const ArchivedTaskList = () => {
                 alert('アーカイブ済みタスク一覧の取得に失敗しました。詳細: ' + error);
             });
     }, []);
+
+    const unarchiveTask = (taskId: number) => {
+        axios
+            .patch<{ tasks: Task[] }>(`http://localhost:3000/api/v1/tasks/${taskId}/archive`, {
+                task: {
+                    archived: false,
+                },
+            })
+            .then((response) => {
+                setArchivedTasks(response.data.tasks);
+            })
+            .catch((error) => {
+                alert('タスクのアーカイブに失敗しました。詳細: ' + error);
+            });
+    };
+
 
     return (
         <div style={{height: '100vh', display: 'flex', flexDirection: 'column'}}>
@@ -53,6 +70,7 @@ const ArchivedTaskList = () => {
                                     >
                                         {task.title}
                                     </Typography>
+                                    <ArchivedTaskOptionsMenu task={task} unarchiveTask={unarchiveTask}/>
                                 </CardContent>
                             </Card>
                         </ListItem>

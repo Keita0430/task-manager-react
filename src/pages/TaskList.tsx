@@ -76,7 +76,7 @@ const TaskList = () => {
         }
     };
 
-    const handleDeleteTask = (taskId: number) => {
+    const deleteTask = (taskId: number) => {
         axios
             .delete<{ tasks: Task[] }>(`http://localhost:3000/api/v1/tasks/${taskId}`)
             .then((response) => {
@@ -87,9 +87,13 @@ const TaskList = () => {
             });
     };
 
-    const handleArchiveTask = (taskId: number) => {
+    const archiveTask = (taskId: number) => {
         axios
-            .patch<{ tasks: Task[] }>(`http://localhost:3000/api/v1/tasks/${taskId}/archive`)
+            .patch<{ tasks: Task[] }>(`http://localhost:3000/api/v1/tasks/${taskId}/archive`, {
+                task: {
+                    archived: true,
+                },
+            })
             .then((response) => {
                 setTasks(response.data.tasks)
             })
@@ -126,8 +130,8 @@ const TaskList = () => {
                             title={getTitle(status as TaskStatusType)}
                             tasks={groupedTasks[status] || []}
                             status={status as TaskStatusType}
-                            onDelete={handleDeleteTask}
-                            onArchive={handleArchiveTask}
+                            onDelete={deleteTask}
+                            onArchive={archiveTask}
                         />
                     ))}
                 </div>
