@@ -45,35 +45,23 @@ const TaskList = () => {
 
         // タスクが同じレーン内で移動する場合
         if (originalStatus === newStatus) {
-            axios.post<{ tasks: Task[] }>(`http://localhost:3000/api/v1/tasks/reorder`, {
-                task: {
-                    id: movedTask.id,
-                    status: originalStatus,
-                    position: newPosition,
-                },
-            })
-                .then((response) => {
-                    setTasks(response.data.tasks)
-                })
-                .catch((error: unknown) => {
-                    alert('タスクの並び替えに失敗しました。詳細: ' + error);
-                });
+            reorderTask(movedTask.id, originalStatus, newPosition);
         } else {
             // タスクがレーン間で移動する場合
-            axios.post<{ tasks: Task[] }>(`http://localhost:3000/api/v1/tasks/reorder`, {
-                task: {
-                    id: movedTask.id,
-                    status: newStatus,
-                    position: newPosition,
-                },
-            })
-                .then((response) => {
-                    setTasks(response.data.tasks)
-                })
-                .catch((error: unknown) => {
-                    alert('タスクの並び替えに失敗しました。詳細: ' + error);
-                });
+            reorderTask(movedTask.id, newStatus, newPosition);
         }
+    };
+
+    const reorderTask = (taskId: number, status: string, position: number) => {
+        axios.post<{ tasks: Task[] }>('http://localhost:3000/api/v1/tasks/reorder', {
+            task: { id: taskId, status, position },
+        })
+            .then((response) => {
+                setTasks(response.data.tasks);
+            })
+            .catch((error: unknown) => {
+                alert('タスクの並び替えに失敗しました。詳細: ' + error);
+            });
     };
 
     const deleteTask = (taskId: number) => {
