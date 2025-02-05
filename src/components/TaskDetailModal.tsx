@@ -10,6 +10,8 @@ import {
     TableRow,
     TableCell
 } from '@mui/material';
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const TaskDetailModal = ({ selectedTask, closeTaskDetailModal }: {
     selectedTask: Task | null,
@@ -30,7 +32,7 @@ const TaskDetailModal = ({ selectedTask, closeTaskDetailModal }: {
                     <TableBody>
                         <TableRow>
                             <TableCell sx={{ fontWeight: 'bold', width: '20%' }}>詳細</TableCell>
-                            <TableCell>{selectedTask?.description}</TableCell>
+                            <TableCell><ReactMarkdown remarkPlugins={[remarkGfm]}>{selectedTask?.description}</ReactMarkdown></TableCell>
                         </TableRow>
                         <TableRow>
                             <TableCell sx={{ fontWeight: 'bold', width: '20%' }}>ステータス</TableCell>

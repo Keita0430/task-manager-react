@@ -3,6 +3,7 @@ import axios from 'axios';
 import {useLocation, useNavigate} from 'react-router-dom';
 import {Box, Button, FormControl, InputLabel, MenuItem, Select, TextField} from '@mui/material';
 import {Task, TaskStatusType} from "../types/task";
+import MarkdownEditor from "../components/MarkdownEditor";
 
 const TaskEdit = () => {
     const location = useLocation();
@@ -36,15 +37,7 @@ const TaskEdit = () => {
                 required
                 margin="normal"
             />
-            <TextField
-                label="説明"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                fullWidth
-                multiline
-                rows={4}
-                margin="normal"
-            />
+            <MarkdownEditor value={description} onChange={setDescription} />
             <FormControl fullWidth margin="normal">
                 <InputLabel id="status-label">ステータス</InputLabel>
                 <Select
