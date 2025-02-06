@@ -21,3 +21,10 @@
     # 開発サーバーの起動
     yarn start
     ```
+
+4. アプリ操作デモ
+   - 以下の動画は、タスク管理アプリの操作デモです。タスクの作成、更新、アーカイブ、削除、並び替えの様子を確認できます。
+
+
+    https://github.com/user-attachments/assets/d7aa7bba-b45b-447a-a03b-bc41477c6561
+
